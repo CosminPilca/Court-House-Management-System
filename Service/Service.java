@@ -60,4 +60,23 @@ public class CourtService {
         return caseRepository.getAll();
     }
 
+    public void assignLawyerToCase(String lawyerId, String caseId) {
+        Lawyer lawyer = lawyerRepository.read(lawyerId);
+        Case caseObj = caseRepository.read(caseId);
+
+        if (lawyer == null) {
+            throw new IllegalArgumentException("Lawyer with ID " + lawyerId + " does not exist.");
+        }
+        if (caseObj == null) {
+            throw new IllegalArgumentException("Case with ID " + caseId + " does not exist.");
+        }
+
+        LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseId);
+        assignmentRepository.create(assignment);
+    }
+
+    public List<LawyerAssignment> getAllAssignments() {
+        return assignmentRepository.getAll();
+    }
+
 }
