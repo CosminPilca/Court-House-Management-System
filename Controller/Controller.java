@@ -26,3 +26,51 @@ public class CourtController {
             System.out.println("7. Exit");
             System.out.print("Choose an option: ");
 
+
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
+                continue;
+            }
+
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addClient(scanner);
+                    break;
+
+                case 2:
+                    addLawyer(scanner);
+                    break;
+
+                case 3:
+                    addCase(scanner);
+                    break;
+
+                case 4:
+                    assignLawyerToCase(scanner);
+                    break;
+
+                case 5:
+                    viewAllClients();
+                    break;
+
+                case 6:
+                    viewAllCases();
+                    break;
+
+                case 7:
+                    System.out.println("Exiting");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        }
+    }
+
+
