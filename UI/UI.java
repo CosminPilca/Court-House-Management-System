@@ -17,3 +17,10 @@ public class ConsoleApp {
         IRepository<LawyerAssignment> assignmentRepo = new InMemoryRepository<>(
                 assignment -> assignment.getLawyerID() + "-" + assignment.getCaseID()
 
+                CourtService service = new CourtService(clientRepo, lawyerRepo, caseRepo, assignmentRepo);
+
+        CourtController controller = new CourtController(service);
+
+        controller.start();
+    }
+}
