@@ -1,21 +1,25 @@
 package com.courthouse.service;
 
-import com.courthouse.model.*;
-import com.courthouse.repository.*;
+import com.courthouse.model.Case;
+import com.courthouse.model.Client;
+import com.courthouse.model.Lawyer;
+import com.courthouse.model.LawyerAssignment;
+import com.courthouse.repository.IRepository;
 
 import java.util.List;
 
 public class CourtService {
-    private IRepository<Client> clientRepository;
-    private IRepository<Lawyer> lawyerRepository;
-    private IRepository<Case> caseRepository;
-    private IRepository<LawyerAssignment> assignmentRepository;
+    private final IRepository<Client> clientRepository;
+    private final IRepository<Lawyer> lawyerRepository;
+    private final IRepository<Case> caseRepository;
+    private final IRepository<LawyerAssignment> assignmentRepository;
 
     public CourtService(
             IRepository<Client> clientRepository,
             IRepository<Lawyer> lawyerRepository,
             IRepository<Case> caseRepository,
-            IRepository<LawyerAssignment> assignmentRepository){
+            IRepository<LawyerAssignment> assignmentRepository
+    ){
         this.clientRepository = clientRepository;
         this.lawyerRepository = lawyerRepository;
         this.caseRepository = caseRepository;
@@ -23,6 +27,10 @@ public class CourtService {
     }
 
     public void addClient(Client client) {
+        if (clientRepository.read(client.getClientID()) != null) {
+            throw new IllegalArgumentException("Client with ID " + client.getClientID() + " already exists.");
+        }
+
         clientRepository.create(client);
     }
 
