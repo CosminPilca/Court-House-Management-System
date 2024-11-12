@@ -38,8 +38,14 @@ public class CourtService {
         return clientRepository.getAll();
     }
 
-    public void assignLawyerToCase(String lawyerId, String caseId) {
-        LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseId);
-        assignmentRepository.create(assignment);
+    public void addLawyer(Lawyer lawyer) {
+        if (lawyerRepository.read(lawyer.getLawyerID()) != null) {
+            throw new IllegalArgumentException("Lawyer with ID " + lawyer.getLawyerID() + " already exists.");
+        }
+        lawyerRepository.create(lawyer);
+    }
+
+    public List<Lawyer> getAllLawyers() {
+        return lawyerRepository.getAll();
     }
 }
