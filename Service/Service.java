@@ -22,6 +22,16 @@ public class CourtService {
         this.assignmentRepository = assignmentRepository;
     }
 
-}
-    )
+    public void addClient(Client client) {
+        clientRepository.create(client);
+    }
+
+    public List<Client> getAllClients() {
+        return clientRepository.getAll();
+    }
+
+    public void assignLawyerToCase(String lawyerId, String caseId) {
+        LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseId);
+        assignmentRepository.create(assignment);
+    }
 }
