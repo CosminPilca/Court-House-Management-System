@@ -16,10 +16,13 @@ public class CourtController {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Court Management System");
+            System.out.println("\nCourt Management System");
             System.out.println("1. Add Client");
-            System.out.println("2. Assign Lawyer to Case");
-            System.out.println("3. Exit");
+            System.out.println("2. Add Lawyer");
+            System.out.println("3. Add Case");
+            System.out.println("4. Assign Lawyer to Case");
+            System.out.println("5. View All Clients");
+            System.out.println("6. View All Cases");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+
