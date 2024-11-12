@@ -14,3 +14,12 @@ public class CourtController {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Court Management System");
+            System.out.println("1. Add Client");
+            System.out.println("2. Assign Lawyer to Case");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
