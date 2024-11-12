@@ -48,4 +48,16 @@ public class CourtService {
     public List<Lawyer> getAllLawyers() {
         return lawyerRepository.getAll();
     }
+
+    public void addCase(Case caseObj) {
+        if (caseRepository.read(caseObj.getCaseID()) != null) {
+            throw new IllegalArgumentException("Case with ID " + caseObj.getCaseID() + " already exists.");
+        }
+        caseRepository.create(caseObj);
+    }
+
+    public List<Case> getAllCases() {
+        return caseRepository.getAll();
+    }
+
 }
