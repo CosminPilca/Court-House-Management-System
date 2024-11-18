@@ -19,4 +19,15 @@ public class Hearing {
         return hearingDate;
     }
 
+    public void setHearingDate(Date hearingDate) {
+        this.hearingDate = hearingDate;
+    }
+
+    public String getHearingTime() {
+        return hearingTime;
+    }
+
+    public void setHearingTime(String hearingTime) {
+        this.hearingTime = hearingTime;
+    }
 }
