@@ -55,16 +55,18 @@ public class Service {
         clientRepository.create(client);
     }
 
+
+
+    public List<Client> getAllClients() {
+        return clientRepository.getAll();
+    }
+
     /**
      * Adds a new lawyer to the system.
      *
      * @param lawyer The lawyer object to be added.
      * @throws IllegalArgumentException if a lawyer with the same ID already exists.
      */
-
-    public List<Client> getAllClients() {
-        return clientRepository.getAll();
-    }
 
     public void addLawyer(Lawyer lawyer) {
         if (lawyerRepository.read(lawyer.getLawyerID()) != null) {
