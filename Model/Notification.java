@@ -21,4 +21,12 @@ public class Notification {
         this.notificationID = notificationID;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
 }
