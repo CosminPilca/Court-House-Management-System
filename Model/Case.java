@@ -6,14 +6,16 @@ package Model;
 public class Case {
     private String caseID;
     private String caseStatus;
+    private String clientId;
 
-    public Case(String caseID, String caseStatus) {
+    public Case(String caseID, String caseStatus, String clientId) {
         this.caseID = caseID;
         this.caseStatus = caseStatus;
+        this.clientId = clientId;
     }
 
     public String getCaseID() {
-        return caseID;
+        return this.caseID;
     }
 
     public void setCaseID(String caseID) {
@@ -21,10 +23,18 @@ public class Case {
     }
 
     public String getCaseStatus() {
-        return caseStatus;
+        return this.caseStatus;
     }
 
     public void setCaseStatus(String caseStatus) {
         this.caseStatus = caseStatus;
     }
+
+    public String getClientId() {
+        return this.clientId;
+    }
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
 }

@@ -23,9 +23,10 @@ public class Controller {
             System.out.println("2. Add Lawyer");
             System.out.println("3. Add Case");
             System.out.println("4. Assign Lawyer to Case");
-            System.out.println("5. View All Clients");
-            System.out.println("6. View All Cases");
-            System.out.println("7. Exit");
+            System.out.println("5. Assign Lawyer to Client Case");
+            System.out.println("6. View All Clients");
+            System.out.println("7. View All Cases");
+            System.out.println("8. Exit");
             System.out.print("Choose an option: ");
 
 
@@ -58,14 +59,18 @@ public class Controller {
                     break;
 
                 case 5:
-                    viewAllClients();
+                    assignLawyerToClientCases();
                     break;
 
                 case 6:
-                    viewAllCases();
+                    viewAllClients();
                     break;
 
                 case 7:
+                    viewAllCases();
+                    break;
+
+                case 8:
                     System.out.println("Exiting");
                     return;
 
@@ -107,8 +112,10 @@ public class Controller {
         String caseId = scanner.nextLine();
         System.out.print("Enter case status: ");
         String caseStatus = scanner.nextLine();
+        System.out.print("Enter case ClientId: ");
+        String clientId = scanner.nextLine();
 
-        Case caseObj = new Case (caseId, caseStatus);
+        Case caseObj = new Case (caseId, caseStatus, clientId);
         Service.addCase(caseObj);
         System.out.println("Case added successfully.");
     }
@@ -138,4 +145,26 @@ public class Controller {
         Service.getAllCases().forEach(caseObj ->
                 System.out.println(caseObj.getCaseID() + " - " + caseObj.getCaseStatus()));
     }
+
+
+/**
+ * Allows the user to assign a lawyer to all open cases for a specific client.
+ */
+public void assignLawyerToClientCases() {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.print("Enter Client ID: ");
+    String clientId = scanner.nextLine();
+
+    System.out.print("Enter Lawyer ID: ");
+    String lawyerId = scanner.nextLine();
+
+    try {
+        Service.assignLawyerToOpenCasesForClient(clientId, lawyerId);
+        System.out.println("Lawyer successfully assigned to open cases.");
+    } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+    }
 }
+    }
+
