@@ -19,4 +19,15 @@ public class Schedule {
         return scheduleID;
     }
 
+    public void setScheduleID(String scheduleID) {
+        this.scheduleID = scheduleID;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
