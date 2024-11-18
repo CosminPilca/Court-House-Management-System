@@ -20,5 +20,23 @@ public class Staff {
         return staffID;
     }
 
+    public void setStaffID(String staffID) {
+        this.staffID = staffID;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
