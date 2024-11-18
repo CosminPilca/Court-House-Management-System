@@ -13,26 +13,36 @@ public class InMemoryRepository<T> implements IRepository<T> {
 
     @Override
     public void create(T entity) {
-        // TO DO
+        String id = idExtractor.apply(entity);
+        if (storage.containsKey(id)) {
+            throw new IllegalArgumentException("Entity with ID " + id + " already exists.");
+        }
+        storage.put(id, entity);
     }
 
     @Override
     public T read(String id) {
-        // TO DO
+        return storage.get(id);
     }
 
     @Override
     public void update(T entity) {
-        // TO DO
+        String id = idExtractor.apply(entity);
+        if (!storage.containsKey(id)) {
+            throw new IllegalArgumentException("Entity with ID " + id + " does not exist.");
+        }
+        storage.put(id, entity);
     }
 
     @Override
     public void delete(String id) {
-        // TO DO
+        if (!storage.containsKey(id)) {
+            throw new IllegalArgumentException("Entity with ID " + id + " does not exist.");
+        }
+        storage.remove(id);
     }
 
     @Override
     public List<T> getAll() {
-        // TO DO
-    }
+        return new ArrayList<>(storage.values());    }
 }
