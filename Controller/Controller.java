@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Case;
+import Model.Lawyer;
 import Service.Service;
 import Model.Client;
 
@@ -106,7 +108,7 @@ public class Controller {
         System.out.print("Enter case status: ");
         String caseStatus = scanner.nextLine();
 
-        Case caseObj = new Case(caseId, caseStatus);
+        Case caseObj = new Case (caseId, caseStatus);
         Service.addCase(caseObj);
         System.out.println("Case added successfully.");
     }

@@ -21,7 +21,7 @@ public class UI {
 
         // Initialize service and controller
         Service service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo);
-        Controller controller = new Controller(Service);
+        Controller controller = new Controller(service);
 
         // Start the application
         controller.start();
