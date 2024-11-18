@@ -1,15 +1,15 @@
-package com.courthouse.controller;
+package Controller;
 
-import com.courthouse.service.CourtService;
-import com.courthouse.model.Client;
+import Service.Service;
+import Model.Client;
 
 import java.util.Scanner;
 
-public class CourtController {
-    private CourtService service;
+public class Controller {
+    private Service Service;
 
-    public CourtController(CourtService service) {
-        this.service = service;
+    public Controller(Service service) {
+        this.Service = service;
     }
 
     public void start() {
@@ -83,7 +83,7 @@ public class CourtController {
         String address = scanner.nextLine();
 
         Client client = new Client(clientId, name, address);
-        service.addClient(client);
+        Service.addClient(client);
         System.out.println("Client added successfully.");
     }
 
@@ -96,7 +96,7 @@ public class CourtController {
         String firmName = scanner.nextLine();
 
         Lawyer lawyer = new Lawyer(lawyerId, name, firmName);
-        service.addLawyer(lawyer);
+        Service.addLawyer(lawyer);
         System.out.println("Lawyer added successfully.");
     }
 
@@ -107,7 +107,7 @@ public class CourtController {
         String caseStatus = scanner.nextLine();
 
         Case caseObj = new Case(caseId, caseStatus);
-        service.addCase(caseObj);
+        Service.addCase(caseObj);
         System.out.println("Case added successfully.");
     }
 
@@ -118,7 +118,7 @@ public class CourtController {
         String caseId = scanner.nextLine();
 
         try {
-            service.assignLawyerToCase(lawyerId, caseId);
+            Service.assignLawyerToCase(lawyerId, caseId);
             System.out.println("Lawyer assigned to case successfully.");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
@@ -127,13 +127,13 @@ public class CourtController {
 
     private void viewAllClients() {
         System.out.println("All Clients:");
-        service.getAllClients().forEach(client ->
+        Service.getAllClients().forEach(client ->
                 System.out.println(client.getClientID() + " - " + client.getName() + " - " + client.getAddress()));
     }
 
     private void viewAllCases() {
         System.out.println("All Cases:");
-        service.getAllCases().forEach(caseObj ->
+        Service.getAllCases().forEach(caseObj ->
                 System.out.println(caseObj.getCaseID() + " - " + caseObj.getCaseStatus()));
     }
 }

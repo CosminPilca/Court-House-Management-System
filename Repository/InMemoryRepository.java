@@ -1,4 +1,4 @@
-package com.courthouse.repository;
+package Repository;
 
 import java.util.*;
 import java.util.function.Function;

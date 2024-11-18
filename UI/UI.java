@@ -1,26 +1,29 @@
-package com.courthouse.ui;
+package UI;
 
-import com.courthouse.controller.CourtController;
-import com.courthouse.model.Client;
-import com.courthouse.model.Lawyer;
-import com.courthouse.model.Case;
-import com.courthouse.model.LawyerAssignment;
-import com.courthouse.repository.InMemoryRepository;
-import com.courthouse.repository.IRepository;
-import com.courthouse.service.CourtService;
+import Controller.Controller;
+import Model.Client;
+import Model.Lawyer;
+import Model.Case;
+import Model.LawyerAssignment;
+import Repository.InMemoryRepository;
+import Repository.IRepository;
+import Service.Service;
 
-public class ConsoleApp {
+public class UI {
     public static void main(String[] args) {
+        // Initialize InMemoryRepository
         IRepository<Client> clientRepo = new InMemoryRepository<>(Client::getClientID);
         IRepository<Lawyer> lawyerRepo = new InMemoryRepository<>(Lawyer::getLawyerID);
         IRepository<Case> caseRepo = new InMemoryRepository<>(Case::getCaseID);
         IRepository<LawyerAssignment> assignmentRepo = new InMemoryRepository<>(
                 assignment -> assignment.getLawyerID() + "-" + assignment.getCaseID()
+        );
 
-                CourtService service = new CourtService(clientRepo, lawyerRepo, caseRepo, assignmentRepo);
+        // Initialize service and controller
+        Service service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo);
+        Controller controller = new Controller(Service);
 
-        CourtController controller = new CourtController(service);
-
+        // Start the application
         controller.start();
     }
 }

@@ -1,4 +1,4 @@
-package com.courthouse.repository;
+package Repository;
 
 import java.util.List;
 

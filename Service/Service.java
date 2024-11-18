@@ -1,20 +1,34 @@
-package com.courthouse.service;
+package Service;
 
-import com.courthouse.model.Case;
-import com.courthouse.model.Client;
-import com.courthouse.model.Lawyer;
-import com.courthouse.model.LawyerAssignment;
-import com.courthouse.repository.IRepository;
+import Model.Case;
+import Model.Client;
+import Model.Lawyer;
+import Model.LawyerAssignment;
+import Repository.IRepository;
 
 import java.util.List;
 
-public class CourtService {
+/**
+ * Service class that handles the business logic for the Court House Management System.
+ * Provides methods to manage clients, lawyers, cases, and their relationships.
+ */
+
+public class Service {
     private final IRepository<Client> clientRepository;
     private final IRepository<Lawyer> lawyerRepository;
     private final IRepository<Case> caseRepository;
     private final IRepository<LawyerAssignment> assignmentRepository;
 
-    public CourtService(
+    /**
+     * Constructor to initialize the service with required repositories.
+     *
+     * @param clientRepository   Repository to manage Client data.
+     * @param lawyerRepository   Repository to manage Lawyer data.
+     * @param caseRepository     Repository to manage Case data.
+     * @param assignmentRepository Repository to manage LawyerAssignment data.
+     */
+
+    public Service(
             IRepository<Client> clientRepository,
             IRepository<Lawyer> lawyerRepository,
             IRepository<Case> caseRepository,
@@ -26,6 +40,13 @@ public class CourtService {
         this.assignmentRepository = assignmentRepository;
     }
 
+    /**
+     * Adds a new client to the system.
+     *
+     * @param client The client object to be added.
+     * @throws IllegalArgumentException if a client with the same ID already exists.
+     */
+
     public void addClient(Client client) {
         if (clientRepository.read(client.getClientID()) != null) {
             throw new IllegalArgumentException("Client with ID " + client.getClientID() + " already exists.");
@@ -33,6 +54,13 @@ public class CourtService {
 
         clientRepository.create(client);
     }
+
+    /**
+     * Adds a new lawyer to the system.
+     *
+     * @param lawyer The lawyer object to be added.
+     * @throws IllegalArgumentException if a lawyer with the same ID already exists.
+     */
 
     public List<Client> getAllClients() {
         return clientRepository.getAll();
@@ -45,9 +73,23 @@ public class CourtService {
         lawyerRepository.create(lawyer);
     }
 
+    /**
+     * Retrieves all lawyers in the system.
+     *
+     * @return A list of all lawyers.
+     */
+
+
     public List<Lawyer> getAllLawyers() {
         return lawyerRepository.getAll();
     }
+
+    /**
+     * Adds a new case to the system.
+     *
+     * @param caseObj The case object to be added.
+     * @throws IllegalArgumentException if a case with the same ID already exists.
+     */
 
     public void addCase(Case caseObj) {
         if (caseRepository.read(caseObj.getCaseID()) != null) {
@@ -56,9 +98,23 @@ public class CourtService {
         caseRepository.create(caseObj);
     }
 
+    /**
+     * Retrieves all cases in the system.
+     *
+     * @return A list of all cases.
+     */
+
     public List<Case> getAllCases() {
         return caseRepository.getAll();
     }
+
+    /**
+     * Assigns a lawyer to a case by creating a relationship in the system.
+     *
+     * @param lawyerId The ID of the lawyer to be assigned.
+     * @param caseId   The ID of the case to which the lawyer is assigned.
+     * @throws IllegalArgumentException if the lawyer or case does not exist.
+     */
 
     public void assignLawyerToCase(String lawyerId, String caseId) {
         Lawyer lawyer = lawyerRepository.read(lawyerId);
@@ -74,6 +130,12 @@ public class CourtService {
         LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseId);
         assignmentRepository.create(assignment);
     }
+
+    /**
+     * Retrieves all lawyer-case assignments in the system.
+     *
+     * @return A list of all lawyer-case assignments.
+     */
 
     public List<LawyerAssignment> getAllAssignments() {
         return assignmentRepository.getAll();
