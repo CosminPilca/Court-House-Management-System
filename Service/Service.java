@@ -7,6 +7,7 @@ import Model.LawyerAssignment;
 import Repository.IRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service class that handles the business logic for the Court House Management System.
@@ -22,9 +23,9 @@ public class Service {
     /**
      * Constructor to initialize the service with required repositories.
      *
-     * @param clientRepository   Repository to manage Client data.
-     * @param lawyerRepository   Repository to manage Lawyer data.
-     * @param caseRepository     Repository to manage Case data.
+     * @param clientRepository     Repository to manage Client data.
+     * @param lawyerRepository     Repository to manage Lawyer data.
+     * @param caseRepository       Repository to manage Case data.
      * @param assignmentRepository Repository to manage LawyerAssignment data.
      */
 
@@ -33,7 +34,7 @@ public class Service {
             IRepository<Lawyer> lawyerRepository,
             IRepository<Case> caseRepository,
             IRepository<LawyerAssignment> assignmentRepository
-    ){
+    ) {
         this.clientRepository = clientRepository;
         this.lawyerRepository = lawyerRepository;
         this.caseRepository = caseRepository;
@@ -54,7 +55,6 @@ public class Service {
 
         clientRepository.create(client);
     }
-
 
 
     public List<Client> getAllClients() {
@@ -143,4 +143,35 @@ public class Service {
         return assignmentRepository.getAll();
     }
 
+
+    /**
+     * Assigns a lawyer to all open cases for a specific client.
+     *
+     * @param clientId The ID of the client whose cases need lawyer assignment.
+     * @param lawyerId The ID of the lawyer to be assigned.
+     * @throws IllegalArgumentException if the client or lawyer does not exist.
+     */
+    public void assignLawyerToOpenCasesForClient(String clientId, String lawyerId) {
+        Client client = clientRepository.read(clientId);
+        if (client == null) {
+            throw new IllegalArgumentException("Client with ID " + clientId + " does not exist.");
+        }
+
+        Lawyer lawyer = lawyerRepository.read(lawyerId);
+        if (lawyer == null) {
+            throw new IllegalArgumentException("Lawyer with ID " + lawyerId + " does not exist.");
+        }
+
+        List<Case> openCasesForClient = caseRepository.getAll().stream()
+                .filter(caseObj -> "Open".equalsIgnoreCase(caseObj.getCaseStatus())
+                        && caseObj.getClientId().equals(clientId))
+                .collect(Collectors.toList());
+
+        for (Case caseObj : openCasesForClient) {
+            LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseObj.getCaseID());
+            assignmentRepository.create(assignment);
+        }
+
+        System.out.println("Lawyer " + lawyerId + " has been assigned to all open cases for client " + clientId);
+    }
 }
