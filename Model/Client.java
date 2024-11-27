@@ -20,19 +20,6 @@ public class Client extends Person{
         this.address = address;
     }
 
-
-    /**
-     * Gets the details of the client.
-     *
-     * @return A string containing the details of the client.
-     */
-    @Override
-    public String getDetails() {
-        return "Client ID: " + clientID + ", Name: " + getName() + ", Address: " + address;
-    }
-
-
-
     public String getClientID() {
         return clientID;
     }
@@ -47,5 +34,15 @@ public class Client extends Person{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * Gets the details of the client.
+     *
+     * @return A string containing the details of the client.
+     */
+    @Override
+    public String getDetails() {
+        return "Client ID: " + clientID + ", Name: " + getName() + ", Address: " + address;
     }
 }
