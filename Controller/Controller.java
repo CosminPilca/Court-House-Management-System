@@ -26,7 +26,9 @@ public class Controller {
             System.out.println("5. Assign Lawyer to Client Case");
             System.out.println("6. View All Clients");
             System.out.println("7. View All Cases");
-            System.out.println("8. Exit");
+            System.out.println("8. Filter Cases by Status");
+            System.out.println("9. Sort Lawyers by Name");
+            System.out.println("10. Exit");
             System.out.print("Choose an option: ");
 
 
@@ -71,6 +73,14 @@ public class Controller {
                     break;
 
                 case 8:
+                    filterCasesByStatus(scanner);
+                    break;
+
+                case 9:
+                    sortLawyersByName();
+                    break;
+
+                case 10:
                     System.out.println("Exiting");
                     return;
 
@@ -115,7 +125,7 @@ public class Controller {
         System.out.print("Enter case ClientId: ");
         String clientId = scanner.nextLine();
 
-        Case caseObj = new Case (caseId, caseStatus, clientId);
+        Case caseObj = new Case(caseId, caseStatus, clientId);
         Service.addCase(caseObj);
         System.out.println("Case added successfully.");
     }
@@ -147,24 +157,53 @@ public class Controller {
     }
 
 
-/**
- * Allows the user to assign a lawyer to all open cases for a specific client.
- */
-public void assignLawyerToClientCases() {
-    Scanner scanner = new Scanner(System.in);
+    /**
+     * Allows the user to assign a lawyer to all open cases for a specific client.
+     */
+    public void assignLawyerToClientCases() {
+        Scanner scanner = new Scanner(System.in);
 
-    System.out.print("Enter Client ID: ");
-    String clientId = scanner.nextLine();
+        System.out.print("Enter Client ID: ");
+        String clientId = scanner.nextLine();
 
-    System.out.print("Enter Lawyer ID: ");
-    String lawyerId = scanner.nextLine();
+        System.out.print("Enter Lawyer ID: ");
+        String lawyerId = scanner.nextLine();
 
-    try {
-        Service.assignLawyerToOpenCasesForClient(clientId, lawyerId);
-        System.out.println("Lawyer successfully assigned to open cases.");
-    } catch (IllegalArgumentException e) {
-        System.out.println(e.getMessage());
+        try {
+            Service.assignLawyerToOpenCasesForClient(clientId, lawyerId);
+            System.out.println("Lawyer successfully assigned to open cases.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Filters cases based on their status (e.g., "Open", "Closed").
+     */
+    private void filterCasesByStatus(Scanner scanner) {
+        System.out.print("Enter case status to filter by (e.g., 'Open', 'Closed'): ");
+        String status = scanner.nextLine();
+
+        System.out.println("Cases with status '" + status + "':");
+        Service.getAllCases().stream()
+                .filter(caseObj -> caseObj.getCaseStatus().equalsIgnoreCase(status))
+                .forEach(caseObj ->
+                        System.out.println(caseObj.getCaseID() + " - " + caseObj.getCaseStatus() + " - Client ID: " + caseObj.getClientID())
+                );
+    }
+
+
+    /**
+     * Sorts all lawyers by their names alphabetically.
+     */
+    private void sortLawyersByName() {
+        System.out.println("All Lawyers (sorted by name):");
+        Service.getAllLawyers().stream()
+                .sorted((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName()))
+                .forEach(lawyer ->
+                        System.out.println(lawyer.getLawyerID() + " - " + lawyer.getName() + " - Firm: " + lawyer.getFirmName())
+                );
     }
 }
-    }
 

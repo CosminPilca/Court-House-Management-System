@@ -6,6 +6,7 @@ import Model.Lawyer;
 import Model.LawyerAssignment;
 import Repository.IRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -174,4 +175,5 @@ public class Service {
 
         System.out.println("Lawyer " + lawyerId + " has been assigned to all open cases for client " + clientId);
     }
+
 }
