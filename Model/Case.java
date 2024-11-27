@@ -18,6 +18,10 @@ public class Case {
         return this.caseID;
     }
 
+    public String getClientID() {
+        return clientId;
+    }
+
     public void setCaseID(String caseID) {
         this.caseID = caseID;
     }
