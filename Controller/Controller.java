@@ -179,7 +179,7 @@ public class Controller {
 
 
     /**
-     * Filters cases based on their status (e.g., "Open", "Closed").
+     * Filters cases based on their status (e.x., "Open", "Closed").
      */
     private void filterCasesByStatus(Scanner scanner) {
         System.out.print("Enter case status to filter by (e.g., 'Open', 'Closed'): ");
