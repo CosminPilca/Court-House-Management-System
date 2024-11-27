@@ -3,14 +3,13 @@ package Model;
 /**
  * Represents a lawyer in the Court House Management System.
  */
-public class Lawyer {
+public class Lawyer extends Person{
     private String LawyerID;
-    private String name;
     private String firmName;
 
     public Lawyer(String lawyerID, String name, String firmName) {
+        super(name);
         this.LawyerID = lawyerID;
-        this.name = name;
         this.firmName = firmName;
     }
 
@@ -22,13 +21,6 @@ public class Lawyer {
         this.LawyerID = lawyerID;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getFirmName() {
         return firmName;
@@ -37,4 +29,14 @@ public class Lawyer {
     public void setFirmName(String firmName) {
         this.firmName = firmName;
     }
+
+    /**
+     * Overrides the abstract method to display lawyer details.
+     */
+    @Override
+    public String getDetails() {
+        return "LawyerID: " + LawyerID + ", Name: " + getName() + ", Firm: " + firmName;
+    }
 }
+
+
