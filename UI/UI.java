@@ -4,6 +4,7 @@ import Controller.Controller;
 import Model.Client;
 import Model.Lawyer;
 import Model.Case;
+import Model.Judge;
 import Model.LawyerAssignment;
 import Repository.InMemoryRepository;
 import Repository.IRepository;
@@ -24,6 +25,7 @@ public class UI {
         String lawyerFilePath = "lawyers.csv";
         String caseFilePath = "cases.csv";
         String assignmentFilePath = "assignments.csv";
+        String judgeFilePath = "judges.csv";
 
         IRepository<Client> clientRepo = new FileRepository<>(
                 clientFilePath,
@@ -65,7 +67,17 @@ public class UI {
                 assignment -> assignment.getLawyerID() + "," + assignment.getCaseID()
         );
 
-        Service service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo);
+        IRepository<Judge> judgeRepo = new FileRepository<>(
+                judgeFilePath,
+                Judge::getJudgeID,
+                line -> {
+                    String[] parts = line.split(",");
+                    return new Judge(parts[0], parts[1], parts[2]);
+                },
+                judge -> judge.getJudgeID() + "," + judge.getName() + "," + judge.getSpecialty()
+        );
+
+        Service service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo,judgeRepo);
         Controller controller = new Controller(service);
 
         controller.start();

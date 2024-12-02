@@ -1,4 +1,4 @@
-package Model;
+package NotUsable;
 
 import java.util.Date;
 

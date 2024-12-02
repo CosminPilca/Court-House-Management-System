@@ -4,6 +4,8 @@ import Model.Case;
 import Model.Lawyer;
 import Service.Service;
 import Model.Client;
+import Model.Judge;
+import Model.Judge;
 
 import java.util.Scanner;
 
@@ -28,7 +30,10 @@ public class Controller {
             System.out.println("7. View All Cases");
             System.out.println("8. Filter Cases by Status");
             System.out.println("9. Sort Lawyers by Name");
-            System.out.println("10. Exit");
+            System.out.println("10. Add Judge");
+            System.out.println("11. View All Judges");
+            System.out.println("12. Filter Judges by Specialty");
+            System.out.println("13. Exit");
             System.out.print("Choose an option: ");
 
 
@@ -79,8 +84,16 @@ public class Controller {
                 case 9:
                     sortLawyersByName();
                     break;
-
                 case 10:
+                    addJudge(scanner);
+                    break;
+                case 11:
+                    viewAllJudges();
+                    break;
+                case 12:
+                    filterJudgesBySpecialty(scanner);
+                    break;
+                case 13:
                     System.out.println("Exiting");
                     return;
 
@@ -205,5 +218,45 @@ public class Controller {
                         System.out.println(lawyer.getLawyerID() + " - " + lawyer.getName() + " - Firm: " + lawyer.getFirmName())
                 );
     }
+
+    /**
+     * Adds new Judges.
+     */
+
+
+    private void addJudge(Scanner scanner) {
+        System.out.print("Enter judge name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter judge ID: ");
+        String judgeId = scanner.nextLine();
+        System.out.print("Enter judge specialty: ");
+        String specialty = scanner.nextLine();
+
+        Judge judge = new Judge(judgeId, name, specialty);
+        Service.addJudge(judge);
+        System.out.println("Judge added successfully.");
+    }
+    /**
+     * Lists all lawyers.
+     */
+
+    private void viewAllJudges() {
+        System.out.println("All Judges:");
+        Service.getAllJudges().forEach(judge ->
+                System.out.println(judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty()));
+    }
+    /**
+     * Sorts all lawyers by their speciality.
+     */
+
+    private void filterJudgesBySpecialty(Scanner scanner) {
+        System.out.print("Enter judge specialty to filter by: ");
+        String specialty = scanner.nextLine();
+
+        System.out.println("Judges with specialty '" + specialty + "':");
+        Service.getJudgesBySpecialty(specialty).forEach(judge ->
+                System.out.println(judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty()));
+    }
 }
+
 

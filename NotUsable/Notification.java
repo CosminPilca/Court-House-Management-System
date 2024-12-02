@@ -1,4 +1,4 @@
-package Model;
+package NotUsable;
 
 /**
  * Represents a notification in the Court House Management System.

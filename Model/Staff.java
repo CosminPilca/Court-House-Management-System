@@ -5,14 +5,13 @@ package Model;
  */
 
 
-public class Staff {
+public class Staff extends Person{
     private String staffID;
-    private String name;
     private String role;
 
     public Staff(String staffID, String name, String role) {
+        super(name);
         this.staffID = staffID;
-        this.name = name;
         this.role = role;
     }
 
@@ -24,19 +23,19 @@ public class Staff {
         this.staffID = staffID;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    /**
+     * Overrides the abstract method to display lawyer details.
+     */
+    @Override
+    public String getDetails() {
+        return "StaffID: " + staffID + " Name: " + getName() + " Role: " + role;
     }
 }

@@ -3,6 +3,7 @@ package Service;
 import Model.Case;
 import Model.Client;
 import Model.Lawyer;
+import Model.Judge;
 import Model.LawyerAssignment;
 import Repository.IRepository;
 
@@ -20,7 +21,7 @@ public class Service {
     private final IRepository<Lawyer> lawyerRepository;
     private final IRepository<Case> caseRepository;
     private final IRepository<LawyerAssignment> assignmentRepository;
-
+    private final IRepository<Judge> judgeRepository;
     /**
      * Constructor to initialize the service with required repositories.
      *
@@ -34,12 +35,14 @@ public class Service {
             IRepository<Client> clientRepository,
             IRepository<Lawyer> lawyerRepository,
             IRepository<Case> caseRepository,
-            IRepository<LawyerAssignment> assignmentRepository
+            IRepository<LawyerAssignment> assignmentRepository,
+            IRepository<Judge> judgeRepository
     ) {
         this.clientRepository = clientRepository;
         this.lawyerRepository = lawyerRepository;
         this.caseRepository = caseRepository;
         this.assignmentRepository = assignmentRepository;
+        this.judgeRepository = judgeRepository;
     }
 
     /**
@@ -175,5 +178,22 @@ public class Service {
 
         System.out.println("Lawyer " + lawyerId + " has been assigned to all open cases for client " + clientId);
     }
+    public void addJudge(Judge judge) {
+        judgeRepository.create(judge);
+    }
 
+    public List<Judge> getAllJudges() {
+        return judgeRepository.getAll();
+    }
+
+    public Judge getJudgeByID(String judgeID) {
+        return judgeRepository.read(judgeID);
+    }
+
+    public List<Judge> getJudgesBySpecialty(String specialty) {
+        // Assuming judgeRepository has a method to get judges by specialty (like in your initial repository code)
+        return judgeRepository.getAll().stream()
+                .filter(judge -> judge.getSpecialty().equalsIgnoreCase(specialty))
+                .collect(Collectors.toList());
+    }
 }
