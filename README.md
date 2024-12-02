@@ -24,7 +24,8 @@ connection.
 Each Hearing is assigned to one Courtroom, ensuring that the courtroom is not double-booked.
 
 
-![diagram1](https://github.com/user-attachments/assets/87e48ff8-d91a-4ea7-8425-059895f703ee)
+
+![Court-House-Management-System drawio](https://github.com/user-attachments/assets/fd90fcad-36c1-4a04-bcee-733ad0ce4b71)
 
 
 
