@@ -73,17 +73,12 @@ public class UI {
                 judge -> judge.getJudgeID() + "," + judge.getName() + "," + judge.getSpecialty()
         );
 
-        /**
-         * initialize service and controller
-         */
+        // initialize service and controller
         Service Service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo, judgeRepo);
         Controller Controller = new Controller(Service);
 
         Scanner scanner = new Scanner(System.in);
 
-        /**
-         * main menu loop
-         */
         while (true) {
             System.out.println("\nCourt Management System");
             System.out.println("1. Add Case");
