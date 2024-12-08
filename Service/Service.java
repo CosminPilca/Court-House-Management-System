@@ -6,6 +6,8 @@ import Model.Judge;
 import Model.Lawyer;
 import Model.LawyerAssignment;
 import Repository.IRepository;
+import Exceptions.EntityNotFoundException;
+import Exceptions.DatabaseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -165,41 +167,50 @@ public class Service {
      * assigns a lawyer to a case
      */
     public void assignLawyerToCase(String lawyerId, String caseId) {
-        Lawyer lawyer = lawyerRepository.read(lawyerId);
-        Case caseObj = caseRepository.read(caseId);
+        try {
+            Lawyer lawyer = lawyerRepository.read(lawyerId);
+            if (lawyer == null) {
+                throw new EntityNotFoundException("Lawyer with ID " + lawyerId + " does not exist.");
+            }
 
-        if (lawyer == null) {
-        throw new IllegalArgumentException("Lawyer with ID " + lawyerId + " does not exist.");
+            Case caseObj = caseRepository.read(caseId);
+            if (caseObj == null) {
+                throw new EntityNotFoundException("Case with ID " + caseId + " does not exist.");
+            }
+
+            LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseId);
+            assignmentRepository.create(assignment);
+        } catch (Exception e) {
+            throw new DatabaseException("Failed to assign lawyer to case. Lawyer ID: " + lawyerId + ", Case ID: " + caseId, e);
         }
-        if (caseObj == null) {
-        throw new IllegalArgumentException("Case with ID " + caseId + " does not exist.");
-        }
-        LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseId);
-        assignmentRepository.create(assignment);
     }
 
     /**
      * assigns a lawyer to all open cases for a client
      */
     public void assignLawyerToOpenCasesForClient(String clientId, String lawyerId) {
-        Client client = clientRepository.read(clientId);
-        if (client == null) {
-            throw new IllegalArgumentException("Client with ID " + clientId + " does not exist.");
-        }
+        try {
+            Client client = clientRepository.read(clientId);
+            if (client == null) {
+                throw new EntityNotFoundException("Client with ID " + clientId + " does not exist.");
+            }
 
-        Lawyer lawyer = lawyerRepository.read(lawyerId);
-        if (lawyer == null) {
-            throw new IllegalArgumentException("Lawyer with ID " + lawyerId + " does not exist.");
-        }
+            Lawyer lawyer = lawyerRepository.read(lawyerId);
+            if (lawyer == null) {
+                throw new EntityNotFoundException("Lawyer with ID " + lawyerId + " does not exist.");
+            }
 
-        List<Case> openCasesForClient = caseRepository.getAll().stream()
-            .filter(caseObj -> "Open".equalsIgnoreCase(caseObj.getCaseStatus())
-                    && caseObj.getClientId().equals(clientId))
-            .collect(Collectors.toList());
+            List<Case> openCasesForClient = caseRepository.getAll().stream()
+                    .filter(caseObj -> "Open".equalsIgnoreCase(caseObj.getCaseStatus())
+                            && caseObj.getClientId().equals(clientId))
+                    .collect(Collectors.toList());
 
-        for (Case caseObj : openCasesForClient) {
-            LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseObj.getCaseID());
-            assignmentRepository.create(assignment);
+            for (Case caseObj : openCasesForClient) {
+                LawyerAssignment assignment = new LawyerAssignment(lawyerId, caseObj.getCaseID());
+                assignmentRepository.create(assignment);
+            }
+        } catch (Exception e) {
+            throw new DatabaseException("Failed to assign lawyer to open cases for client ID: " + clientId, e);
         }
     }
 
@@ -209,10 +220,14 @@ public class Service {
      * @return a list of filtered cases by status
      */
     public List<String> filterCasesByStatus(String status) {
-        return caseRepository.getAll().stream()
-            .filter(caseObj -> caseObj.getCaseStatus().equalsIgnoreCase(status))
-            .map(caseObj -> caseObj.getCaseID() + " - " + caseObj.getCaseStatus() + " - Client ID: " + caseObj.getClientId())
-            .collect(Collectors.toList());
+        try {
+            return caseRepository.getAll().stream()
+                    .filter(caseObj -> caseObj.getCaseStatus().equalsIgnoreCase(status))
+                    .map(caseObj -> caseObj.getCaseID() + " - " + caseObj.getCaseStatus() + " - Client ID: " + caseObj.getClientId())
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new DatabaseException("Failed to filter cases by status: " + status, e);
+        }
     }
 
     /**
@@ -221,10 +236,14 @@ public class Service {
      * @return a list of sorted lawyers
      */
     public List<String> sortLawyersByName() {
-        return lawyerRepository.getAll().stream()
-            .sorted((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName()))
-            .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - Firm: " + lawyer.getFirmName())
-            .collect(Collectors.toList());
+        try {
+            return lawyerRepository.getAll().stream()
+                    .sorted((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName()))
+                    .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - Firm: " + lawyer.getFirmName())
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new DatabaseException("Failed to sort lawyers by name.", e);
+        }
     }
 
     /**
@@ -233,10 +252,14 @@ public class Service {
      * @return a list of filtered judges by specialty
      */
     public List<String> filterJudgesBySpecialty(String specialty) {
-        return judgeRepository.getAll().stream()
-            .filter(judge -> judge.getSpecialty().equalsIgnoreCase(specialty))
-            .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
-            .collect(Collectors.toList());
+        try {
+            return judgeRepository.getAll().stream()
+                    .filter(judge -> judge.getSpecialty().equalsIgnoreCase(specialty))
+                    .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new DatabaseException("Failed to filter judges by specialty: " + specialty, e);
+        }
     }
 
 }
