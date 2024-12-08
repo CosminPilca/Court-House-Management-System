@@ -29,6 +29,7 @@ public class Service {
         this.judgeRepository = judgeRepository;
     }
 
+    //Case methods
     public void addCase(String caseId, String caseStatus, String clientId) {
         Case caseObj = new Case(caseId, caseStatus, clientId);
         if (caseRepository.read(caseObj.getCaseID()) != null) {
@@ -37,6 +38,28 @@ public class Service {
         caseRepository.create(caseObj);
     }
 
+    public void updateCase(String caseId, String caseStatus, String clientId) {
+        Case caseObj = caseRepository.read(caseId);
+        if (caseObj != null) {
+            caseObj.setCaseStatus(caseStatus);
+            caseObj.setClientId(clientId);
+            caseRepository.update(caseObj);
+        } else {
+            throw new IllegalArgumentException("Case with ID " + caseId + " does not exist.");
+        }
+    }
+
+    public void deleteCase(String caseId) {
+        caseRepository.delete(caseId);
+    }
+
+    public List<String> getAllCases() {
+        return caseRepository.getAll().stream()
+                .map(caseObj -> caseObj.getCaseID() + " - " + caseObj.getCaseStatus())
+                .collect(Collectors.toList());
+    }
+
+    //Client methods
     public void addClient(String clientId, String name, String address) {
         Client client = new Client(clientId, name, address);
         if (clientRepository.read(client.getClientID()) != null) {
@@ -45,6 +68,28 @@ public class Service {
         clientRepository.create(client);
     }
 
+    public void updateClient(String clientId, String name, String address) {
+        Client client = clientRepository.read(clientId);
+        if (client != null) {
+            client.setName(name);
+            client.setAddress(address);
+            clientRepository.update(client);
+        } else {
+            throw new IllegalArgumentException("Client with ID " + clientId + " does not exist.");
+        }
+    }
+
+    public void deleteClient(String clientId) {
+        clientRepository.delete(clientId);
+    }
+
+    public List<String> getAllClients() {
+        return clientRepository.getAll().stream()
+                .map(client -> client.getClientID() + " - " + client.getName() + " - " + client.getAddress())
+                .collect(Collectors.toList());
+    }
+
+    //Lawyer methods
     public void addLawyer(String lawyerId, String name, String firmName) {
         Lawyer lawyer = new Lawyer(lawyerId, name, firmName);
         if (lawyerRepository.read(lawyer.getLawyerID()) != null) {
@@ -54,24 +99,19 @@ public class Service {
 
     }
 
-    public void addJudge(String judgeId, String name, String specialty) {
-        Judge judge = new Judge(judgeId, name, specialty);
-        if (judgeRepository.read(judge.getJudgeID()) != null) {
-            throw new IllegalArgumentException("Judge with ID " + judge.getJudgeID() + " already exists.");
+    public void updateLawyer(String lawyerId, String name, String firmName) {
+        Lawyer lawyer = lawyerRepository.read(lawyerId);
+        if (lawyer != null) {
+            lawyer.setName(name);
+            lawyer.setFirmName(firmName);
+            lawyerRepository.update(lawyer);
+        } else {
+            throw new IllegalArgumentException("Lawyer with ID " + lawyerId + " does not exist.");
         }
-        judgeRepository.create(judge);
     }
 
-    public List<String> getAllCases() {
-        return caseRepository.getAll().stream()
-            .map(caseObj -> caseObj.getCaseID() + " - " + caseObj.getCaseStatus())
-            .collect(Collectors.toList());
-    }
-
-    public List<String> getAllClients() {
-        return clientRepository.getAll().stream()
-                .map(client -> client.getClientID() + " - " + client.getName() + " - " + client.getAddress())
-                .collect(Collectors.toList());
+    public void deleteLawyer(String lawyerId) {
+        lawyerRepository.delete(lawyerId);
     }
 
     public List<String> getAllLawyers() {
@@ -80,12 +120,37 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
+    //Judge methods
+    public void addJudge(String judgeId, String name, String specialty) {
+        Judge judge = new Judge(judgeId, name, specialty);
+        if (judgeRepository.read(judge.getJudgeID()) != null) {
+            throw new IllegalArgumentException("Judge with ID " + judge.getJudgeID() + " already exists.");
+        }
+        judgeRepository.create(judge);
+    }
+
+    public void updateJudge(String judgeId, String name, String specialty) {
+        Judge judge = judgeRepository.read(judgeId);
+        if (judge != null) {
+            judge.setName(name);
+            judge.setSpecialty(specialty);
+            judgeRepository.update(judge);
+        } else {
+            throw new IllegalArgumentException("Judge with ID " + judgeId + " does not exist.");
+        }
+    }
+
+    public void deleteJudge(String judgeId) {
+        judgeRepository.delete(judgeId);
+    }
+
     public List<String> getAllJudges() {
         return judgeRepository.getAll().stream()
                 .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
                 .collect(Collectors.toList());
     }
 
+    //Other methods
     public void assignLawyerToCase(String lawyerId, String caseId) {
         Lawyer lawyer = lawyerRepository.read(lawyerId);
         Case caseObj = caseRepository.read(caseId);
