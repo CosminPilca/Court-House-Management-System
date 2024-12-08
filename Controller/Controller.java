@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.ValidationException;
 import Service.Service;
 import java.util.List;
 
@@ -9,8 +10,8 @@ import java.util.List;
 public class Controller {
     private final Service Service;
 
-    public Controller(Service mainService) {
-        this.Service = mainService;
+    public Controller(Service Service) {
+        this.Service = Service;
     }
 
     /**
@@ -19,14 +20,23 @@ public class Controller {
      * @param clientId the client associated with the case
      */
     public void addCase(String caseId, String caseStatus, String clientId) {
+        if (caseId == null || caseId.isEmpty()) {
+            throw new ValidationException("Case ID cannot be null or empty.");
+        }
         Service.addCase(caseId, caseStatus, clientId);
     }
 
     public void updateCase(String caseId, String caseStatus, String clientId) {
+        if (caseId == null || caseId.isEmpty()) {
+            throw new ValidationException("Case ID cannot be null or empty.");
+        }
         Service.updateCase(caseId, caseStatus, clientId);
     }
 
     public void deleteCase(String caseId) {
+        if (caseId == null || caseId.isEmpty()) {
+            throw new ValidationException("Case ID cannot be null or empty.");
+        }
         Service.deleteCase(caseId);
     }
 
@@ -38,14 +48,23 @@ public class Controller {
      * add, update, delete and getAll client method calls
      */
     public void addClient(String clientId, String name, String address) {
+        if (clientId == null || clientId.isEmpty()) {
+            throw new ValidationException("Client ID cannot be null or empty.");
+        }
         Service.addClient(clientId, name, address);
     }
 
     public void updateClient(String clientId, String name, String address) {
+        if (clientId == null || clientId.isEmpty()) {
+            throw new ValidationException("Client ID cannot be null or empty.");
+        }
         Service.updateClient(clientId, name, address);
     }
 
     public void deleteClient(String clientId) {
+        if (clientId == null || clientId.isEmpty()) {
+            throw new ValidationException("Client ID cannot be null or empty.");
+        }
         Service.deleteClient(clientId);
     }
 
@@ -59,14 +78,23 @@ public class Controller {
      * @param firmName the firm where the lawyer works
      */
     public void addLawyer(String lawyerId, String name, String firmName) {
+        if (lawyerId == null || lawyerId.isEmpty()) {
+            throw new ValidationException("Lawyer ID cannot be null or empty.");
+        }
         Service.addLawyer(lawyerId, name, firmName);
     }
 
     public void updateLawyer(String lawyerId, String name, String firmName) {
+        if (lawyerId == null || lawyerId.isEmpty()) {
+            throw new ValidationException("Lawyer ID cannot be null or empty.");
+        }
         Service.updateLawyer(lawyerId, name, firmName);
     }
 
     public void deleteLawyer(String lawyerId) {
+        if (lawyerId == null || lawyerId.isEmpty()) {
+            throw new ValidationException("Lawyer ID cannot be null or empty.");
+        }
         Service.deleteLawyer(lawyerId);
     }
 
@@ -80,14 +108,23 @@ public class Controller {
      * @param specialty civil/penal/etc
      */
     public void addJudge(String judgeId, String name, String specialty) {
+        if (judgeId == null || judgeId.isEmpty()) {
+            throw new ValidationException("Judge ID cannot be null or empty.");
+        }
         Service.addJudge(judgeId, name, specialty);
     }
 
     public void updateJudge(String judgeId, String name, String specialty) {
+        if (judgeId == null || judgeId.isEmpty()) {
+            throw new ValidationException("Judge ID cannot be null or empty.");
+        }
         Service.updateJudge(judgeId, name, specialty);
     }
 
     public void deleteJudge(String judgeId) {
+        if (judgeId == null || judgeId.isEmpty()) {
+            throw new ValidationException("Judge ID cannot be null or empty.");
+        }
         Service.deleteJudge(judgeId);
     }
 
@@ -99,6 +136,9 @@ public class Controller {
      * assigns a lawyer to a case
      */
     public void assignLawyerToCase(String lawyerId, String caseId) {
+        if (lawyerId == null || lawyerId.isEmpty() || caseId == null || caseId.isEmpty()) {
+            throw new ValidationException("Lawyer ID and Case ID cannot be null or empty.");
+        }
         Service.assignLawyerToCase(lawyerId, caseId);
     }
 
@@ -106,6 +146,9 @@ public class Controller {
      * assigns a lawyer to all open cases for a client
      */
     public void assignLawyerToClientCases(String clientId, String lawyerId) {
+        if (clientId == null || clientId.isEmpty() || lawyerId == null || lawyerId.isEmpty()) {
+            throw new ValidationException("Client ID and Lawyer ID cannot be null or empty.");
+        }
         Service.assignLawyerToOpenCasesForClient(clientId, lawyerId);
     }
 
@@ -115,6 +158,9 @@ public class Controller {
      * @return a list of filtered cases
      */
     public List<String> filterCasesByStatus(String status) {
+        if (status == null || status.isEmpty()) {
+            throw new ValidationException("Case status cannot be null or empty.");
+        }
         return Service.filterCasesByStatus(status);
     }
 
@@ -133,6 +179,9 @@ public class Controller {
      * @return a list of filtered judges
      */
     public List<String> filterJudgesBySpecialty(String specialty) {
+        if (specialty == null || specialty.isEmpty()) {
+            throw new ValidationException("Specialty cannot be null or empty.");
+        }
         return Service.filterJudgesBySpecialty(specialty);
     }
 }
