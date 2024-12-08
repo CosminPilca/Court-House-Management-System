@@ -83,12 +83,20 @@ public class UI {
             System.out.println("6. View All Clients");
             System.out.println("7. View All Lawyers");
             System.out.println("8. View All Judges");
-            System.out.println("9. Assign Lawyer to Case");
-            System.out.println("10. Assign Lawyer to Client Case");
-            System.out.println("11. Filter Cases by Status");
-            System.out.println("12. Sort Lawyers by Name");
-            System.out.println("13. Filter Judges by Specialty");
-            System.out.println("14. Exit");
+            System.out.println("9. Update Case");
+            System.out.println("10. Update Client");
+            System.out.println("11. Update Lawyer");
+            System.out.println("12. Update Judge");
+            System.out.println("13. Delete Case");
+            System.out.println("14. Delete Client");
+            System.out.println("15. Delete Lawyer");
+            System.out.println("16. Delete Judge");
+            System.out.println("17. Assign Lawyer to Case");
+            System.out.println("18. Assign Lawyer to Client Case");
+            System.out.println("19. Filter Cases by Status");
+            System.out.println("20. Sort Lawyers by Name");
+            System.out.println("21. Filter Judges by Specialty");
+            System.out.println("22. Exit");
             System.out.print("Choose an option: ");
 
             int choice;
@@ -156,36 +164,100 @@ public class UI {
                     Controller.getAllJudges().forEach(System.out::println);
                     break;
                 case 9:
+                    System.out.println("Enter case ID to update:");
+                    String caseToUpdate = scanner.nextLine();
+                    System.out.print("Enter new case status:");
+                    String newCaseStatus = scanner.nextLine();
+                    System.out.print("Enter new client ID for the case:");
+                    String newCaseClientId = scanner.nextLine();
+                    Controller.updateCase(caseToUpdate, newCaseStatus, newCaseClientId);
+                    System.out.println("Case updated successfully.");
+                    break;
+                case 10:
+                    System.out.println("Enter client ID to update:");
+                    String clientToUpdate = scanner.nextLine();
+                    System.out.print("Enter new client name:");
+                    String newClientName = scanner.nextLine();
+                    System.out.print("Enter new client address:");
+                    String newClientAddress = scanner.nextLine();
+                    Controller.updateClient(clientToUpdate, newClientName, newClientAddress);
+                    System.out.println("Client updated successfully.");
+                    break;
+                case 11:
+                    System.out.println("Enter lawyer ID to update:");
+                    String lawyerToUpdate = scanner.nextLine();
+                    System.out.print("Enter new lawyer name:");
+                    String newLawyerName = scanner.nextLine();
+                    System.out.print("Enter new firm name:");
+                    String newFirmName = scanner.nextLine();
+                    Controller.updateLawyer(lawyerToUpdate, newLawyerName, newFirmName);
+                    System.out.println("Lawyer updated successfully.");
+                    break;
+                case 12:
+                    System.out.println("Enter judge ID to update:");
+                    String judgeToUpdate = scanner.nextLine();
+                    System.out.print("Enter new judge name:");
+                    String newJudgeName = scanner.nextLine();
+                    System.out.print("Enter new judge specialty:");
+                    String newSpecialty = scanner.nextLine();
+                    Controller.updateJudge(judgeToUpdate, newJudgeName, newSpecialty);
+                    System.out.println("Judge updated successfully.");
+                    break;
+                case 13:
+                    System.out.println("Enter case ID to delete:");
+                    String caseToDelete = scanner.nextLine();
+                    Controller.deleteCase(caseToDelete);
+                    System.out.println("Case deleted successfully.");
+                    break;
+                case 14:
+                    System.out.println("Enter client ID to delete:");
+                    String clientToDelete = scanner.nextLine();
+                    Controller.deleteClient(clientToDelete);
+                    System.out.println("Client deleted successfully.");
+                    break;
+                case 15:
+                    System.out.println("Enter lawyer ID to delete:");
+                    String lawyerToDelete = scanner.nextLine();
+                    Controller.deleteLawyer(lawyerToDelete);
+                    System.out.println("Lawyer deleted successfully.");
+                    break;
+                case 16:
+                    System.out.println("Enter judge ID to delete:");
+                    String judgeToDelete = scanner.nextLine();
+                    Controller.deleteJudge(judgeToDelete);
+                    System.out.println("Judge deleted successfully.");
+                    break;
+                case 17:
                     System.out.print("Enter lawyer ID: ");
                     String assignLawyerId = scanner.nextLine();
                     System.out.print("Enter case ID: ");
                     String assignCaseId = scanner.nextLine();
                     Controller.assignLawyerToCase(assignLawyerId, assignCaseId);
                     break;
-                case 10:
+                case 18:
                     System.out.print("Enter client ID: ");
                     String clientToAssign = scanner.nextLine();
                     System.out.print("Enter lawyer ID: ");
                     String lawyerToAssign = scanner.nextLine();
                     Controller.assignLawyerToClientCases(clientToAssign, lawyerToAssign);
                     break;
-                case 11:
+                case 19:
                     System.out.print("Enter case status to filter by: ");
                     String status = scanner.nextLine();
                     System.out.println("Cases with status '" + status + "':");
                     Controller.filterCasesByStatus(status).forEach(System.out::println);
                     break;
-                case 12:
+                case 20:
                     System.out.println("All Lawyers (sorted by name):");
                     Controller.sortLawyersByName().forEach(System.out::println);
                     break;
-                case 13:
+                case 21:
                     System.out.print("Enter judge specialty to filter by: ");
                     String judgeSpecialty = scanner.nextLine();
                     System.out.println("Judges with specialty '" + judgeSpecialty + "':");
                     Controller.filterJudgesBySpecialty(judgeSpecialty).forEach(System.out::println);
                     break;
-                case 14:
+                case 22:
                     System.out.println("Exiting");
                     return;
                 default:
