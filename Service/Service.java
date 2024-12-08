@@ -1,6 +1,5 @@
 package Service;
 
-import Controller.Controller;
 import Model.Case;
 import Model.Client;
 import Model.Judge;
@@ -30,6 +29,14 @@ public class Service {
         this.judgeRepository = judgeRepository;
     }
 
+    public void addCase(String caseId, String caseStatus, String clientId) {
+        Case caseObj = new Case(caseId, caseStatus, clientId);
+        if (caseRepository.read(caseObj.getCaseID()) != null) {
+            throw new IllegalArgumentException("Case with ID " + caseObj.getCaseID() + " already exists.");
+        }
+        caseRepository.create(caseObj);
+    }
+
     public void addClient(String clientId, String name, String address) {
         Client client = new Client(clientId, name, address);
         if (clientRepository.read(client.getClientID()) != null) {
@@ -38,36 +45,47 @@ public class Service {
         clientRepository.create(client);
     }
 
-    public List<String> getAllClients() {
-        return clientRepository.getAll().stream()
-            .map(client -> client.getClientID() + " - " + client.getName() + " - " + client.getAddress())
-            .collect(Collectors.toList());
-    }
-
     public void addLawyer(String lawyerId, String name, String firmName) {
         Lawyer lawyer = new Lawyer(lawyerId, name, firmName);
         if (lawyerRepository.read(lawyer.getLawyerID()) != null) {
             throw new IllegalArgumentException("Lawyer with ID " + lawyer.getLawyerID() + " already exists.");
         }
         lawyerRepository.create(lawyer);
-    }
-    public List<String> getAllLawyers() {
-        return lawyerRepository.getAll().stream()
-            .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - " + lawyer.getFirmName())
-            .collect(Collectors.toList());
+
     }
 
-    public void addCase(String caseId, String caseStatus, String clientId) {
-        Case caseObj = new Case(caseId, caseStatus, clientId);
-        if (caseRepository.read(caseObj.getCaseID()) != null) {
-            throw new IllegalArgumentException("Case with ID " + caseObj.getCaseID() + " already exists.");
+    public void addJudge(String judgeId, String name, String specialty) {
+        Judge judge = new Judge(judgeId, name, specialty);
+        if (judgeRepository.read(judge.getJudgeID()) != null) {
+            throw new IllegalArgumentException("Judge with ID " + judge.getJudgeID() + " already exists.");
+        }
+        judgeRepository.create(judge);
     }
-        caseRepository.create(caseObj);
-    }
+
     public List<String> getAllCases() {
         return caseRepository.getAll().stream()
             .map(caseObj -> caseObj.getCaseID() + " - " + caseObj.getCaseStatus())
-            .collect(Collectors.toList()); }
+            .collect(Collectors.toList());
+    }
+
+    public List<String> getAllClients() {
+        return clientRepository.getAll().stream()
+                .map(client -> client.getClientID() + " - " + client.getName() + " - " + client.getAddress())
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllLawyers() {
+        return lawyerRepository.getAll().stream()
+                .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - " + lawyer.getFirmName())
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllJudges() {
+        return judgeRepository.getAll().stream()
+                .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
+                .collect(Collectors.toList());
+    }
+
     public void assignLawyerToCase(String lawyerId, String caseId) {
         Lawyer lawyer = lawyerRepository.read(lawyerId);
         Case caseObj = caseRepository.read(caseId);
@@ -115,17 +133,6 @@ public class Service {
         return lawyerRepository.getAll().stream()
             .sorted((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName()))
             .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - Firm: " + lawyer.getFirmName())
-            .collect(Collectors.toList());
-    }
-
-    public void addJudge(String judgeId, String name, String specialty) {
-        Judge judge = new Judge(judgeId, name, specialty);
-        judgeRepository.create(judge);
-    }
-
-    public List<String> getAllJudges() {
-        return judgeRepository.getAll().stream()
-            .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
             .collect(Collectors.toList());
     }
 
