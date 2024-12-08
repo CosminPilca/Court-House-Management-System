@@ -19,7 +19,7 @@ public class Controller {
         Service.updateCase(caseId, caseStatus, clientId);
     }
 
-    public void deleteCase(String caseId, String clientId) {
+    public void deleteCase(String caseId) {
         Service.deleteCase(caseId);
     }
 
@@ -36,7 +36,7 @@ public class Controller {
         Service.updateClient(clientId, name, address);
     }
 
-    public void deleteClient(String clientId, String name) {
+    public void deleteClient(String clientId) {
         Service.deleteClient(clientId);
     }
 
@@ -53,7 +53,7 @@ public class Controller {
         Service.updateLawyer(lawyerId, name, firmName);
     }
 
-    public void deleteLawyer(String lawyerId, String name) {
+    public void deleteLawyer(String lawyerId) {
         Service.deleteLawyer(lawyerId);
     }
 
@@ -70,7 +70,7 @@ public class Controller {
         Service.updateJudge(judgeId, name, specialty);
     }
 
-    public void deleteJudge(String judgeId, String name) {
+    public void deleteJudge(String judgeId) {
         Service.deleteJudge(judgeId);
     }
 
