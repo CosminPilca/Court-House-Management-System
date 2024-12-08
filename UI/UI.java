@@ -1,6 +1,7 @@
 package UI;
 
 import Controller.Controller;
+import Exceptions.BusinessLogicException;
 import Repository.FileRepository;
 import Model.Client;
 import Model.Case;
@@ -258,7 +259,7 @@ public class UI {
                         System.out.print("Enter case ID: ");
                         String assignCaseId = scanner.nextLine();
                         Controller.assignLawyerToCase(assignLawyerId, assignCaseId);
-                    } catch (EntityNotFoundException | DatabaseException e) {
+                    } catch (EntityNotFoundException | BusinessLogicException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                     break;
