@@ -9,6 +9,8 @@ import Model.Lawyer;
 import Model.LawyerAssignment;
 import Service.Service;
 import Repository.IRepository;
+import Exceptions.EntityNotFoundException;
+import Exceptions.DatabaseException;
 import java.util.Scanner;
 
 /**
@@ -118,40 +120,56 @@ public class UI {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter case ID: ");
-                    String caseId = scanner.nextLine();
-                    System.out.print("Enter case status: ");
-                    String caseStatus = scanner.nextLine();
-                    System.out.print("Enter client ID for the case: ");
-                    String caseClientId = scanner.nextLine();
-                    Controller.addCase(caseId, caseStatus, caseClientId);
+                    try {
+                        System.out.print("Enter case ID: ");
+                        String caseId = scanner.nextLine();
+                        System.out.print("Enter case status: ");
+                        String caseStatus = scanner.nextLine();
+                        System.out.print("Enter client ID for the case: ");
+                        String caseClientId = scanner.nextLine();
+                        Controller.addCase(caseId, caseStatus, caseClientId);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 2:
-                    System.out.print("Enter client ID: ");
-                    String clientId = scanner.nextLine();
-                    System.out.print("Enter client name: ");
-                    String clientName = scanner.nextLine();
-                    System.out.print("Enter client address: ");
-                    String clientAddress = scanner.nextLine();
-                    Controller.addClient(clientId, clientName, clientAddress);
+                    try {
+                        System.out.print("Enter client ID: ");
+                        String clientId = scanner.nextLine();
+                        System.out.print("Enter client name: ");
+                        String clientName = scanner.nextLine();
+                        System.out.print("Enter client address: ");
+                        String clientAddress = scanner.nextLine();
+                        Controller.addClient(clientId, clientName, clientAddress);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 3:
-                    System.out.print("Enter lawyer ID: ");
-                    String lawyerId = scanner.nextLine();
-                    System.out.print("Enter lawyer name: ");
-                    String lawyerName = scanner.nextLine();
-                    System.out.print("Enter lawyer firm name: ");
-                    String firmName = scanner.nextLine();
-                    Controller.addLawyer(lawyerId, lawyerName, firmName);
+                    try {
+                        System.out.print("Enter lawyer ID: ");
+                        String lawyerId = scanner.nextLine();
+                        System.out.print("Enter lawyer name: ");
+                        String lawyerName = scanner.nextLine();
+                        System.out.print("Enter lawyer firm name: ");
+                        String firmName = scanner.nextLine();
+                        Controller.addLawyer(lawyerId, lawyerName, firmName);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 4:
-                    System.out.print("Enter judge ID: ");
-                    String judgeId = scanner.nextLine();
-                    System.out.print("Enter judge name: ");
-                    String judgeName = scanner.nextLine();
-                    System.out.print("Enter judge specialty: ");
-                    String specialty = scanner.nextLine();
-                    Controller.addJudge(judgeId, judgeName, specialty);
+                    try {
+                        System.out.print("Enter judge ID: ");
+                        String judgeId = scanner.nextLine();
+                        System.out.print("Enter judge name: ");
+                        String judgeName = scanner.nextLine();
+                        System.out.print("Enter judge specialty: ");
+                        String specialty = scanner.nextLine();
+                        Controller.addJudge(judgeId, judgeName, specialty);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 5:
                     System.out.println("All Cases:");
@@ -234,34 +252,54 @@ public class UI {
                     System.out.println("Judge deleted successfully.");
                     break;
                 case 17:
-                    System.out.print("Enter lawyer ID: ");
-                    String assignLawyerId = scanner.nextLine();
-                    System.out.print("Enter case ID: ");
-                    String assignCaseId = scanner.nextLine();
-                    Controller.assignLawyerToCase(assignLawyerId, assignCaseId);
+                    try {
+                        System.out.print("Enter lawyer ID: ");
+                        String assignLawyerId = scanner.nextLine();
+                        System.out.print("Enter case ID: ");
+                        String assignCaseId = scanner.nextLine();
+                        Controller.assignLawyerToCase(assignLawyerId, assignCaseId);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 18:
-                    System.out.print("Enter client ID: ");
-                    String clientToAssign = scanner.nextLine();
-                    System.out.print("Enter lawyer ID: ");
-                    String lawyerToAssign = scanner.nextLine();
-                    Controller.assignLawyerToClientCases(clientToAssign, lawyerToAssign);
+                    try {
+                        System.out.print("Enter client ID: ");
+                        String clientToAssign = scanner.nextLine();
+                        System.out.print("Enter lawyer ID: ");
+                        String lawyerToAssign = scanner.nextLine();
+                        Controller.assignLawyerToClientCases(clientToAssign, lawyerToAssign);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 19:
-                    System.out.print("Enter case status to filter by: ");
-                    String status = scanner.nextLine();
-                    System.out.println("Cases with status '" + status + "':");
-                    Controller.filterCasesByStatus(status).forEach(System.out::println);
+                    try {
+                        System.out.print("Enter case status to filter by: ");
+                        String status = scanner.nextLine();
+                        System.out.println("Cases with status '" + status + "':");
+                        Controller.filterCasesByStatus(status).forEach(System.out::println);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 20:
-                    System.out.println("All Lawyers (sorted by name):");
-                    Controller.sortLawyersByName().forEach(System.out::println);
+                    try {
+                        System.out.println("All Lawyers (sorted by name):");
+                        Controller.sortLawyersByName().forEach(System.out::println);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 21:
-                    System.out.print("Enter judge specialty to filter by: ");
-                    String judgeSpecialty = scanner.nextLine();
-                    System.out.println("Judges with specialty '" + judgeSpecialty + "':");
-                    Controller.filterJudgesBySpecialty(judgeSpecialty).forEach(System.out::println);
+                    try {
+                        System.out.print("Enter judge specialty to filter by: ");
+                        String judgeSpecialty = scanner.nextLine();
+                        System.out.println("Judges with specialty '" + judgeSpecialty + "':");
+                        Controller.filterJudgesBySpecialty(judgeSpecialty).forEach(System.out::println);
+                    } catch (EntityNotFoundException | DatabaseException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
                 case 22:
                     System.out.println("Exiting");
