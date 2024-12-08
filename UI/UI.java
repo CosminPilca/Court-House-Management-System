@@ -11,6 +11,10 @@ import Service.Service;
 import Repository.IRepository;
 import java.util.Scanner;
 
+/**
+ * UI class serves as the user interface for the Courthouse Management System
+ * provides a menu for adding, updating, deleting and viewing entities
+ */
 public class UI {
     public static void main(String[] args) {
         String clientFilePath = "clients.csv";
@@ -68,11 +72,18 @@ public class UI {
                 },
                 judge -> judge.getJudgeID() + "," + judge.getName() + "," + judge.getSpecialty()
         );
+
+        /**
+         * initialize service and controller
+         */
         Service Service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo, judgeRepo);
         Controller Controller = new Controller(Service);
 
         Scanner scanner = new Scanner(System.in);
 
+        /**
+         * main menu loop
+         */
         while (true) {
             System.out.println("\nCourt Management System");
             System.out.println("1. Add Case");

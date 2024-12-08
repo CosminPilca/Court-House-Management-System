@@ -9,6 +9,9 @@ import Repository.IRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service class manages operations and calls repository functions
+ */
 public class Service {
     private final IRepository<Client> clientRepository;
     private final IRepository<Lawyer> lawyerRepository;
@@ -29,7 +32,9 @@ public class Service {
         this.judgeRepository = judgeRepository;
     }
 
-    //Case methods
+    /**
+     * add, update, delete and getAll case method implementations
+     */
     public void addCase(String caseId, String caseStatus, String clientId) {
         Case caseObj = new Case(caseId, caseStatus, clientId);
         if (caseRepository.read(caseObj.getCaseID()) != null) {
@@ -59,7 +64,9 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
-    //Client methods
+    /**
+     * add, update, delete and getAll client method implementations
+     */
     public void addClient(String clientId, String name, String address) {
         Client client = new Client(clientId, name, address);
         if (clientRepository.read(client.getClientID()) != null) {
@@ -89,7 +96,9 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
-    //Lawyer methods
+    /**
+     * add, update, delete and getAll lawyer method implementations
+     */
     public void addLawyer(String lawyerId, String name, String firmName) {
         Lawyer lawyer = new Lawyer(lawyerId, name, firmName);
         if (lawyerRepository.read(lawyer.getLawyerID()) != null) {
@@ -120,7 +129,9 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
-    //Judge methods
+    /**
+     * add, delete, update and getAll judge method implementations
+     */
     public void addJudge(String judgeId, String name, String specialty) {
         Judge judge = new Judge(judgeId, name, specialty);
         if (judgeRepository.read(judge.getJudgeID()) != null) {
@@ -150,7 +161,9 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
-    //Other methods
+    /**
+     * assigns a lawyer to a case
+     */
     public void assignLawyerToCase(String lawyerId, String caseId) {
         Lawyer lawyer = lawyerRepository.read(lawyerId);
         Case caseObj = caseRepository.read(caseId);
@@ -165,6 +178,9 @@ public class Service {
         assignmentRepository.create(assignment);
     }
 
+    /**
+     * assigns a lawyer to all open cases for a client
+     */
     public void assignLawyerToOpenCasesForClient(String clientId, String lawyerId) {
         Client client = clientRepository.read(clientId);
         if (client == null) {
@@ -187,6 +203,11 @@ public class Service {
         }
     }
 
+    /**
+     * filters cases by status
+     *
+     * @return a list of filtered cases by status
+     */
     public List<String> filterCasesByStatus(String status) {
         return caseRepository.getAll().stream()
             .filter(caseObj -> caseObj.getCaseStatus().equalsIgnoreCase(status))
@@ -194,6 +215,11 @@ public class Service {
             .collect(Collectors.toList());
     }
 
+    /**
+     * sorts lawyers by name
+     *
+     * @return a list of sorted lawyers
+     */
     public List<String> sortLawyersByName() {
         return lawyerRepository.getAll().stream()
             .sorted((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName()))
@@ -201,6 +227,11 @@ public class Service {
             .collect(Collectors.toList());
     }
 
+    /**
+     * filters judges by specialty
+     *
+     * @return a list of filtered judges by specialty
+     */
     public List<String> filterJudgesBySpecialty(String specialty) {
         return judgeRepository.getAll().stream()
             .filter(judge -> judge.getSpecialty().equalsIgnoreCase(specialty))
