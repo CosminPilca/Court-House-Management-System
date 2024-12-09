@@ -13,6 +13,8 @@ public class Lawyer extends Person{
         this.firmName = firmName;
     }
 
+    public Lawyer() {};
+
     public String getLawyerID() {
         return LawyerID;
     }
@@ -35,8 +37,6 @@ public class Lawyer extends Person{
      */
     @Override
     public String getDetails() {
-        return "LawyerID: " + LawyerID + ", Name: " + getName() + ", Firm: " + firmName;
+        return "LawyerID: " + LawyerID + ", Name: " + getGivenName() + ", Firm: " + firmName;
     }
 }
-
-

@@ -33,7 +33,7 @@ public class UI {
                     String[] parts = line.split(",");
                     return new Client(parts[0], parts[1], parts[2]);
                 },
-                client -> client.getClientID() + "," + client.getName() + "," + client.getAddress()
+                client -> client.getClientID() + "," + client.getGivenName() + "," + client.getAddress()
         );
 
         IRepository<Lawyer> lawyerRepo = new FileRepository<>(
@@ -43,7 +43,7 @@ public class UI {
                     String[] parts = line.split(",");
                     return new Lawyer(parts[0], parts[1], parts[2]);
                 },
-                lawyer -> lawyer.getLawyerID() + "," + lawyer.getName() + "," + lawyer.getFirmName()
+                lawyer -> lawyer.getLawyerID() + "," + lawyer.getGivenName() + "," + lawyer.getFirmName()
         );
 
         IRepository<Case> caseRepo = new FileRepository<>(
@@ -73,7 +73,7 @@ public class UI {
                     String[] parts = line.split(",");
                     return new Judge(parts[0], parts[1], parts[2]);
                 },
-                judge -> judge.getJudgeID() + "," + judge.getName() + "," + judge.getSpecialty()
+                judge -> judge.getJudgeID() + "," + judge.getGivenName() + "," + judge.getSpecialty()
         );
 
         // initialize service and controller

@@ -13,6 +13,8 @@ public class Judge extends Person {
         this.specialty = specialty;
     }
 
+    public Judge(){}
+
     public String getJudgeID() {
         return judgeID;
     }
@@ -34,6 +36,6 @@ public class Judge extends Person {
      */
     @Override
     public String getDetails() {
-        return "Judge ID: " + judgeID + ", Name: " + getName() + ", Specialty: " + specialty;
+        return "Judge ID: " + judgeID + ", Name: " + getGivenName() + ", Specialty: " + specialty;
     }
 }

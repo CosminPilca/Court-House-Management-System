@@ -80,7 +80,7 @@ public class Service {
     public void updateClient(String clientId, String name, String address) {
         Client client = clientRepository.read(clientId);
         if (client != null) {
-            client.setName(name);
+            client.setGivenName(name);
             client.setAddress(address);
             clientRepository.update(client);
         } else {
@@ -94,7 +94,7 @@ public class Service {
 
     public List<String> getAllClients() {
         return clientRepository.getAll().stream()
-                .map(client -> client.getClientID() + " - " + client.getName() + " - " + client.getAddress())
+                .map(client -> client.getClientID() + " - " + client.getGivenName() + " - " + client.getAddress())
                 .collect(Collectors.toList());
     }
 
@@ -113,7 +113,7 @@ public class Service {
     public void updateLawyer(String lawyerId, String name, String firmName) {
         Lawyer lawyer = lawyerRepository.read(lawyerId);
         if (lawyer != null) {
-            lawyer.setName(name);
+            lawyer.setGivenName(name);
             lawyer.setFirmName(firmName);
             lawyerRepository.update(lawyer);
         } else {
@@ -127,7 +127,7 @@ public class Service {
 
     public List<String> getAllLawyers() {
         return lawyerRepository.getAll().stream()
-                .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - " + lawyer.getFirmName())
+                .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getGivenName() + " - " + lawyer.getFirmName())
                 .collect(Collectors.toList());
     }
 
@@ -145,7 +145,7 @@ public class Service {
     public void updateJudge(String judgeId, String name, String specialty) {
         Judge judge = judgeRepository.read(judgeId);
         if (judge != null) {
-            judge.setName(name);
+            judge.setGivenName(name);
             judge.setSpecialty(specialty);
             judgeRepository.update(judge);
         } else {
@@ -159,7 +159,7 @@ public class Service {
 
     public List<String> getAllJudges() {
         return judgeRepository.getAll().stream()
-                .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
+                .map(judge -> judge.getJudgeID() + " - " + judge.getGivenName() + " - Specialty: " + judge.getSpecialty())
                 .collect(Collectors.toList());
     }
 
@@ -238,8 +238,8 @@ public class Service {
     public List<String> sortLawyersByName() {
         try {
             return lawyerRepository.getAll().stream()
-                    .sorted((l1, l2) -> l1.getName().compareToIgnoreCase(l2.getName()))
-                    .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getName() + " - Firm: " + lawyer.getFirmName())
+                    .sorted((l1, l2) -> l1.getGivenName().compareToIgnoreCase(l2.getGivenName()))
+                    .map(lawyer -> lawyer.getLawyerID() + " - " + lawyer.getGivenName() + " - Firm: " + lawyer.getFirmName())
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new DatabaseException("Failed to sort lawyers by name.", e);
@@ -255,7 +255,7 @@ public class Service {
         try {
             return judgeRepository.getAll().stream()
                     .filter(judge -> judge.getSpecialty().equalsIgnoreCase(specialty))
-                    .map(judge -> judge.getJudgeID() + " - " + judge.getName() + " - Specialty: " + judge.getSpecialty())
+                    .map(judge -> judge.getJudgeID() + " - " + judge.getGivenName() + " - Specialty: " + judge.getSpecialty())
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new DatabaseException("Failed to filter judges by specialty: " + specialty, e);

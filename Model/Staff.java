@@ -36,6 +36,6 @@ public class Staff extends Person{
      */
     @Override
     public String getDetails() {
-        return "StaffID: " + staffID + " Name: " + getName() + " Role: " + role;
+        return "StaffID: " + staffID + " Name: " + getGivenName() + " Role: " + role;
     }
 }

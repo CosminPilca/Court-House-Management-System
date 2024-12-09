@@ -1,18 +1,20 @@
 package Model;
 
 public abstract class Person {
-    private String name;
+    private String givenName;
 
-    public Person(String name) {
-        this.name = name;
+
+    public Person(){}
+    public Person(String givenName) {
+        this.givenName = givenName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
     }
 
-    public String getName() {
-        return name;
+    public String getGivenName() {
+        return givenName;
     }
     /**
      * Abstract method for returning person details.

@@ -20,6 +20,16 @@ public class Client extends Person{
         this.address = address;
     }
 
+    public Client(){}
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "clientID='" + clientID + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
     public String getClientID() {
         return clientID;
     }
@@ -43,6 +53,7 @@ public class Client extends Person{
      */
     @Override
     public String getDetails() {
-        return "Client ID: " + clientID + ", Name: " + getName() + ", Address: " + address;
+        return "Client ID: " + clientID + ", Name: " + getGivenName() + ", Address: " + address;
     }
+
 }

@@ -8,6 +8,8 @@ public class Case {
     private String caseStatus;
     private String clientId;
 
+    public Case(){}
+
     public Case(String caseID, String caseStatus, String clientId) {
         this.caseID = caseID;
         this.caseStatus = caseStatus;
