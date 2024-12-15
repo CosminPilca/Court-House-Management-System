@@ -9,3 +9,5 @@ public interface IRepository<T> {
     void delete(String id);
     List<T> getAll();
 }
+
+

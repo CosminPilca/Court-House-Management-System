@@ -19,66 +19,11 @@ import java.util.Scanner;
  * provides a menu for adding, updating, deleting and viewing entities
  */
 public class UI {
-    public static void main(String[] args) {
-        String clientFilePath = "clients.csv";
-        String lawyerFilePath = "lawyers.csv";
-        String caseFilePath = "cases.csv";
-        String assignmentFilePath = "assignments.csv";
-        String judgeFilePath = "judges.csv";
+    private final Controller controller;
+    public UI(Controller controller) {
+        this.controller = controller;}
+    public void run() {
 
-        IRepository<Client> clientRepo = new FileRepository<>(
-                clientFilePath,
-                Client::getClientID,
-                line -> {
-                    String[] parts = line.split(",");
-                    return new Client(parts[0], parts[1], parts[2]);
-                },
-                client -> client.getClientID() + "," + client.getGivenName() + "," + client.getAddress()
-        );
-
-        IRepository<Lawyer> lawyerRepo = new FileRepository<>(
-                lawyerFilePath,
-                Lawyer::getLawyerID,
-                line -> {
-                    String[] parts = line.split(",");
-                    return new Lawyer(parts[0], parts[1], parts[2]);
-                },
-                lawyer -> lawyer.getLawyerID() + "," + lawyer.getGivenName() + "," + lawyer.getFirmName()
-        );
-
-        IRepository<Case> caseRepo = new FileRepository<>(
-                caseFilePath,
-                Case::getCaseID,
-                line -> {
-                    String[] parts = line.split(",");
-                    return new Case(parts[0], parts[1], parts[2]); // Assuming Case constructor: Case(id, status, clientId)
-                },
-                caseObj -> caseObj.getCaseID() + "," + caseObj.getCaseStatus() + "," + caseObj.getClientId()
-        );
-
-        IRepository<LawyerAssignment> assignmentRepo = new FileRepository<>(
-                assignmentFilePath,
-                assignment -> assignment.getLawyerID() + "-" + assignment.getCaseID(),
-                line -> {
-                    String[] parts = line.split(",");
-                    return new LawyerAssignment(parts[0], parts[1]);
-                },
-                assignment -> assignment.getLawyerID() + "," + assignment.getCaseID()
-        );
-
-        IRepository<Judge> judgeRepo = new FileRepository<>(
-                judgeFilePath,
-                Judge::getJudgeID,
-                line -> {
-                    String[] parts = line.split(",");
-                    return new Judge(parts[0], parts[1], parts[2]);
-                },
-                judge -> judge.getJudgeID() + "," + judge.getGivenName() + "," + judge.getSpecialty()
-        );
-
-        // initialize service and controller
-        Service Service = new Service(clientRepo, lawyerRepo, caseRepo, assignmentRepo, judgeRepo);
-        Controller Controller = new Controller(Service);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -128,7 +73,7 @@ public class UI {
                         String caseStatus = scanner.nextLine();
                         System.out.print("Enter client ID for the case: ");
                         String caseClientId = scanner.nextLine();
-                        Controller.addCase(caseId, caseStatus, caseClientId);
+                        this.controller.addCase(caseId, caseStatus, caseClientId);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -141,7 +86,7 @@ public class UI {
                         String clientName = scanner.nextLine();
                         System.out.print("Enter client address: ");
                         String clientAddress = scanner.nextLine();
-                        Controller.addClient(clientId, clientName, clientAddress);
+                        this.controller.addClient(clientId, clientName, clientAddress);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -154,7 +99,7 @@ public class UI {
                         String lawyerName = scanner.nextLine();
                         System.out.print("Enter lawyer firm name: ");
                         String firmName = scanner.nextLine();
-                        Controller.addLawyer(lawyerId, lawyerName, firmName);
+                        this.controller.addLawyer(lawyerId, lawyerName, firmName);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -167,26 +112,26 @@ public class UI {
                         String judgeName = scanner.nextLine();
                         System.out.print("Enter judge specialty: ");
                         String specialty = scanner.nextLine();
-                        Controller.addJudge(judgeId, judgeName, specialty);
+                        this.controller.addJudge(judgeId, judgeName, specialty);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                     break;
                 case 5:
                     System.out.println("All Cases:");
-                    Controller.getAllCases().forEach(System.out::println);
+                    this.controller.getAllCases().forEach(System.out::println);
                     break;
                 case 6:
                     System.out.println("All Clients:");
-                    Controller.getAllClients().forEach(System.out::println);
+                    this.controller.getAllClients().forEach(System.out::println);
                     break;
                 case 7:
                     System.out.println("All Lawyers:");
-                    Controller.getAllLawyers().forEach(System.out::println);
+                    this.controller.getAllLawyers().forEach(System.out::println);
                     break;
                 case 8:
                     System.out.println("All Judges:");
-                    Controller.getAllJudges().forEach(System.out::println);
+                    this.controller.getAllJudges().forEach(System.out::println);
                     break;
                 case 9:
                     System.out.println("Enter case ID to update:");
@@ -195,7 +140,7 @@ public class UI {
                     String newCaseStatus = scanner.nextLine();
                     System.out.print("Enter new client ID for the case:");
                     String newCaseClientId = scanner.nextLine();
-                    Controller.updateCase(caseToUpdate, newCaseStatus, newCaseClientId);
+                    this.controller.updateCase(caseToUpdate, newCaseStatus, newCaseClientId);
                     System.out.println("Case updated successfully.");
                     break;
                 case 10:
@@ -205,7 +150,7 @@ public class UI {
                     String newClientName = scanner.nextLine();
                     System.out.print("Enter new client address:");
                     String newClientAddress = scanner.nextLine();
-                    Controller.updateClient(clientToUpdate, newClientName, newClientAddress);
+                    this.controller.updateClient(clientToUpdate, newClientName, newClientAddress);
                     System.out.println("Client updated successfully.");
                     break;
                 case 11:
@@ -215,7 +160,7 @@ public class UI {
                     String newLawyerName = scanner.nextLine();
                     System.out.print("Enter new firm name:");
                     String newFirmName = scanner.nextLine();
-                    Controller.updateLawyer(lawyerToUpdate, newLawyerName, newFirmName);
+                    this.controller.updateLawyer(lawyerToUpdate, newLawyerName, newFirmName);
                     System.out.println("Lawyer updated successfully.");
                     break;
                 case 12:
@@ -225,31 +170,31 @@ public class UI {
                     String newJudgeName = scanner.nextLine();
                     System.out.print("Enter new judge specialty:");
                     String newSpecialty = scanner.nextLine();
-                    Controller.updateJudge(judgeToUpdate, newJudgeName, newSpecialty);
+                    this.controller.updateJudge(judgeToUpdate, newJudgeName, newSpecialty);
                     System.out.println("Judge updated successfully.");
                     break;
                 case 13:
                     System.out.println("Enter case ID to delete:");
                     String caseToDelete = scanner.nextLine();
-                    Controller.deleteCase(caseToDelete);
+                    this.controller.deleteCase(caseToDelete);
                     System.out.println("Case deleted successfully.");
                     break;
                 case 14:
                     System.out.println("Enter client ID to delete:");
                     String clientToDelete = scanner.nextLine();
-                    Controller.deleteClient(clientToDelete);
+                    this.controller.deleteClient(clientToDelete);
                     System.out.println("Client deleted successfully.");
                     break;
                 case 15:
                     System.out.println("Enter lawyer ID to delete:");
                     String lawyerToDelete = scanner.nextLine();
-                    Controller.deleteLawyer(lawyerToDelete);
+                    this.controller.deleteLawyer(lawyerToDelete);
                     System.out.println("Lawyer deleted successfully.");
                     break;
                 case 16:
                     System.out.println("Enter judge ID to delete:");
                     String judgeToDelete = scanner.nextLine();
-                    Controller.deleteJudge(judgeToDelete);
+                    this.controller.deleteJudge(judgeToDelete);
                     System.out.println("Judge deleted successfully.");
                     break;
                 case 17:
@@ -258,7 +203,7 @@ public class UI {
                         String assignLawyerId = scanner.nextLine();
                         System.out.print("Enter case ID: ");
                         String assignCaseId = scanner.nextLine();
-                        Controller.assignLawyerToCase(assignLawyerId, assignCaseId);
+                        this.controller.assignLawyerToCase(assignLawyerId, assignCaseId);
                     } catch (EntityNotFoundException | BusinessLogicException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -269,7 +214,7 @@ public class UI {
                         String clientToAssign = scanner.nextLine();
                         System.out.print("Enter lawyer ID: ");
                         String lawyerToAssign = scanner.nextLine();
-                        Controller.assignLawyerToClientCases(clientToAssign, lawyerToAssign);
+                        this.controller.assignLawyerToClientCases(clientToAssign, lawyerToAssign);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -279,7 +224,7 @@ public class UI {
                         System.out.print("Enter case status to filter by: ");
                         String status = scanner.nextLine();
                         System.out.println("Cases with status '" + status + "':");
-                        Controller.filterCasesByStatus(status).forEach(System.out::println);
+                        this.controller.filterCasesByStatus(status).forEach(System.out::println);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -287,7 +232,7 @@ public class UI {
                 case 20:
                     try {
                         System.out.println("All Lawyers (sorted by name):");
-                        Controller.sortLawyersByName().forEach(System.out::println);
+                        this.controller.sortLawyersByName().forEach(System.out::println);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -297,7 +242,7 @@ public class UI {
                         System.out.print("Enter judge specialty to filter by: ");
                         String judgeSpecialty = scanner.nextLine();
                         System.out.println("Judges with specialty '" + judgeSpecialty + "':");
-                        Controller.filterJudgesBySpecialty(judgeSpecialty).forEach(System.out::println);
+                        this.controller.filterJudgesBySpecialty(judgeSpecialty).forEach(System.out::println);
                     } catch (EntityNotFoundException | DatabaseException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
