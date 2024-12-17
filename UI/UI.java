@@ -46,7 +46,7 @@ public class UI {
             System.out.println("15. Delete Lawyer");
             System.out.println("16. Delete Judge");
             System.out.println("17. Assign Lawyer to Case");
-            System.out.println("18. Assign Lawyer to Client Case");
+            System.out.println("18. Assign Lawyer to Open Case");
             System.out.println("19. Filter Cases by Status");
             System.out.println("20. Sort Lawyers by Name");
             System.out.println("21. Filter Judges by Specialty");

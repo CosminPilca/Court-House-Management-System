@@ -2,10 +2,7 @@ package Repository;
 import Exceptions.BusinessLogicException;
 import Exceptions.DatabaseException;
 import Exceptions.EntityNotFoundException;
-import Model.Case;
-import Model.Client;
-import Model.Judge;
-import Model.Lawyer;
+import Model.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -65,15 +62,18 @@ public class DBRepository<T> implements IRepository<T> {
      * @throws DatabaseException if a database error occurs during the operation.
      */
 
-
     public void create(T entity) {
         try (Connection connection = getConnection()){
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("INSERT INTO ");
-            stringBuilder.append(getTableName());
+            if (getTableName().equals("Case")) {
+                stringBuilder.append("`").append(getTableName()).append("`");
+            } else {
+                stringBuilder.append(getTableName());
+            }
             stringBuilder.append("(");
-            for (String collumnName: fields) {
-                stringBuilder.append(collumnName);
+            for (String columnName: fields) {
+                stringBuilder.append(columnName);
                 stringBuilder.append(",");
             }
             stringBuilder.deleteCharAt(stringBuilder.length()-1);
@@ -109,13 +109,17 @@ public class DBRepository<T> implements IRepository<T> {
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT ");
-            for (String collumnName: fields) {
-                stringBuilder.append(collumnName);
+            for (String columnName: fields) {
+                stringBuilder.append(columnName);
                 stringBuilder.append(",");
             }
             stringBuilder.deleteCharAt(stringBuilder.length()-1);
             stringBuilder.append(" FROM ");
-            stringBuilder.append(getTableName());
+            if (getTableName().equals("Case")) {
+                stringBuilder.append("`").append(getTableName()).append("`");
+            } else {
+                stringBuilder.append(getTableName());
+            }
             stringBuilder.append(" WHERE ");
             stringBuilder.append(primaryKeyName);
             stringBuilder.append(" = ?");
@@ -147,10 +151,13 @@ public class DBRepository<T> implements IRepository<T> {
 
     public void delete(String id) {
         try (Connection connection = getConnection()) {
-
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("DELETE FROM ");
-            stringBuilder.append(getTableName());
+            if (getTableName().equals("Case")) {
+                stringBuilder.append("`").append(getTableName()).append("`");
+            } else {
+                stringBuilder.append(getTableName());
+            }
             stringBuilder.append(" WHERE ");
             stringBuilder.append(primaryKeyName);
             stringBuilder.append(" = ?");
@@ -178,13 +185,17 @@ public class DBRepository<T> implements IRepository<T> {
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT ");
-            for (String collumnName: fields) {
-                stringBuilder.append(collumnName);
+            for (String columnName: fields) {
+                stringBuilder.append(columnName);
                 stringBuilder.append(",");
             }
             stringBuilder.deleteCharAt(stringBuilder.length()-1);
             stringBuilder.append(" FROM ");
-            stringBuilder.append(getTableName());
+            if (getTableName().equals("Case")) {
+                stringBuilder.append("`").append(getTableName()).append("`");
+            } else {
+                stringBuilder.append(getTableName());
+            }
 
             PreparedStatement statement = connection.prepareStatement(stringBuilder.toString());
             ResultSet resultSet = statement.executeQuery();
@@ -214,12 +225,16 @@ public class DBRepository<T> implements IRepository<T> {
         try (Connection connection = getConnection()){
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("UPDATE  ");
-            stringBuilder.append(getTableName());
+            if (getTableName().equals("Case")) {
+                stringBuilder.append("`").append(getTableName()).append("`");
+            } else {
+                stringBuilder.append(getTableName());
+            }
             stringBuilder.append(" SET ");
-            for (String collumnName: fields) {
-                stringBuilder.append(collumnName);
+            for (String columnName: fields) {
+                stringBuilder.append(columnName);
                 stringBuilder.append("=");
-                Method getter = classType.getMethod("get"+collumnName);
+                Method getter = classType.getMethod("get"+columnName);
                 stringBuilder.append("'")
                         .append(getter.invoke(entity))
                         .append("',");
@@ -256,6 +271,8 @@ public class DBRepository<T> implements IRepository<T> {
             return "Lawyer";
         } else if (classType.equals(Case.class)) {
             return "Case";
+        } else if (classType.equals(LawyerAssignment.class)) {
+            return "LawyerAssignment";
         }
         throw new RuntimeException("Class " + classType + " is not supported.");
     }

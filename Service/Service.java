@@ -38,11 +38,16 @@ public class Service {
      * add, update, delete and getAll case method implementations
      */
     public void addCase(String caseId, String caseStatus, String clientId) {
-        Case caseObj = new Case(caseId, caseStatus, clientId);
-        if (caseRepository.read(caseObj.getCaseID()) != null) {
-            throw new IllegalArgumentException("Case with ID " + caseObj.getCaseID() + " already exists.");
+        if (caseExists(caseId)) {
+            throw new IllegalArgumentException("Case with ID " + caseId + " already exist.");
         }
-        caseRepository.create(caseObj);
+
+        if (!clientExists(clientId)) {
+            throw new IllegalArgumentException("Client with ID " + clientId + " does not exist.");
+        }
+
+        Case aCase = new Case(caseId, caseStatus, clientId);
+        caseRepository.create(aCase);
     }
 
     public void updateCase(String caseId, String caseStatus, String clientId) {
@@ -70,10 +75,11 @@ public class Service {
      * add, update, delete and getAll client method implementations
      */
     public void addClient(String clientId, String name, String address) {
-        Client client = new Client(clientId, name, address);
-        if (clientRepository.read(client.getClientID()) != null) {
-            throw new IllegalArgumentException("Client with ID " + client.getClientID() + " already exists.");
+        if (clientExists(clientId)) {
+            throw new IllegalArgumentException("Client with ID " + clientId + " already exist.");
         }
+
+        Client client = new Client(clientId, name, address);
         clientRepository.create(client);
     }
 
@@ -102,12 +108,12 @@ public class Service {
      * add, update, delete and getAll lawyer method implementations
      */
     public void addLawyer(String lawyerId, String name, String firmName) {
-        Lawyer lawyer = new Lawyer(lawyerId, name, firmName);
-        if (lawyerRepository.read(lawyer.getLawyerID()) != null) {
-            throw new IllegalArgumentException("Lawyer with ID " + lawyer.getLawyerID() + " already exists.");
+        if (lawyerExists(lawyerId)) {
+            throw new IllegalArgumentException("Lawyer with ID " + lawyerId + " already exist.");
         }
-        lawyerRepository.create(lawyer);
 
+        Lawyer lawyer = new Lawyer(lawyerId, name, firmName);
+        lawyerRepository.create(lawyer);
     }
 
     public void updateLawyer(String lawyerId, String name, String firmName) {
@@ -135,10 +141,11 @@ public class Service {
      * add, delete, update and getAll judge method implementations
      */
     public void addJudge(String judgeId, String name, String specialty) {
-        Judge judge = new Judge(judgeId, name, specialty);
-        if (judgeRepository.read(judge.getJudgeID()) != null) {
-            throw new IllegalArgumentException("Judge with ID " + judge.getJudgeID() + " already exists.");
+        if (judgeExists(judgeId)) {
+            throw new IllegalArgumentException("Judge with ID " + judgeId + " already exist.");
         }
+
+        Judge judge = new Judge(judgeId, name, specialty);
         judgeRepository.create(judge);
     }
 
@@ -168,13 +175,11 @@ public class Service {
      */
     public void assignLawyerToCase(String lawyerId, String caseId) {
         try {
-            Lawyer lawyer = lawyerRepository.read(lawyerId);
-            if (lawyer == null) {
+            if (!lawyerExists(lawyerId)) {
                 throw new EntityNotFoundException("Lawyer with ID " + lawyerId + " does not exist.");
             }
 
-            Case caseObj = caseRepository.read(caseId);
-            if (caseObj == null) {
+            if (!caseExists(caseId)) {
                 throw new EntityNotFoundException("Case with ID " + caseId + " does not exist.");
             }
 
@@ -262,4 +267,39 @@ public class Service {
         }
     }
 
+    private boolean clientExists(String clientId) {
+        try {
+            clientRepository.read(clientId);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
+
+    private boolean caseExists(String caseId) {
+        try {
+            caseRepository.read(caseId);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
+
+    private boolean lawyerExists(String lawyerId) {
+        try {
+            lawyerRepository.read(lawyerId);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
+
+    private boolean judgeExists(String judgeId) {
+        try {
+            judgeRepository.read(judgeId);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+    }
 }

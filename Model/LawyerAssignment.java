@@ -4,10 +4,10 @@ package Model;
  * Represents an assignment of a lawyer to a case.
  */
 public class LawyerAssignment {
-    private String lawyerID;
     private String caseID;
+    private String lawyerID;
 
-    public LawyerAssignment(String lawyerID, String caseID) {
+    public LawyerAssignment(String caseID, String lawyerID) {
         this.lawyerID = lawyerID;
         this.caseID = caseID;
     }
